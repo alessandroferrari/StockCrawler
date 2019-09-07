@@ -203,6 +203,8 @@ def get_stock_price_per_month(ticker, year, month):
         if i>=2:
             break
         day = day - 1
+        if day==0:
+            break
 
     price = None
     for year, month, day in dates:

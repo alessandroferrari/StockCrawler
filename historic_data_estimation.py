@@ -95,7 +95,7 @@ def compute_historic_PE(data, pe_bottom_cap=0.0, pe_top_cap=35.0, pe_factor=0.6,
     pe_df = financials_df.loc[PE_RATIO_ROW]
     # do not modify original values with capping and drop NaN, exclude them from AVG
     pe_df_capped = pe_df.copy().dropna()
-    pe_df_capped = clean_outliers(pe_df_capped)
+    #pe_df_capped = clean_outliers(pe_df_capped)
     num_yrs = pe_df_capped.shape[0]
     if weight_data:
         weights = np.exp(-np.arange(num_yrs)[::-1]/(2*float(num_yrs)))
@@ -156,7 +156,7 @@ def compute_historic_eps(data, eps_bottom_cap=0.0, weight_data=True):
 
     eps_df = financials_df.loc[EPS_ROW]
     eps_df_capped = eps_df.copy().dropna()
-    eps_df_capped = clean_outliers(eps_df_capped)
+    #eps_df_capped = clean_outliers(eps_df_capped)
     num_y = eps_df_capped.shape[0]
     if weight_data:
         weights = np.exp(-np.arange(num_y)[::-1]/(2*float(num_y)))

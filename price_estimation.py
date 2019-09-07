@@ -12,11 +12,13 @@ from dcf_estimation import dcf_price_estimation_from_historical_data, dcf_price_
 from data_parser.yahoo_finance.price_estimation import estimate as estimate_fcf
 from data_parser.common import get_page_html
 
+import argparse
 import datetime
 import logging
 import logging.config
 import math
 import os
+from shutil import copyfile
 import sys
 import traceback
 import time
@@ -283,6 +285,9 @@ def process_stock(ticker, name):
                                             price_fcf_avg=price_fcf_avg, price_fcf_last_yr=price_fcf_last_yr,
                                             market_cap=market_cap, debt_ratio_avg=debt_ratio_avg,
                                             debt_ratio_y1=debt_ratio_y1, price=price)
+
+        save_results(header, content)
+
     except Exception:
         tb = traceback.format_exc()
         logger.error("%s|Error while processing %s: %s"%(ticker, ticker, tb))
@@ -290,12 +295,60 @@ def process_stock(ticker, name):
 
     return header, content
 
+def save_results(header, content):
+
+    out_fn = os.path.join(os.path.expanduser("~/Desktop"), "quantitave_%s" % os.path.basename(stocks_list_fn))
+    is_first =  not os.path.exists(out_fn)
+    f = open(out_fn, "a+")
+    if not header is None and is_first:
+        header = header.replace(",", "|")
+        f.write("%s\n"%header)
+    content = "%s\n" % content
+    content = content.replace(",", "|")
+    f.write(content)
+    f.close()
+    backup_fn = os.path.join(os.path.expanduser("~/Desktop"), "bckp_quantitave_%s" % os.path.basename(stocks_list_fn))
+    copyfile(out_fn, backup_fn)
+
+def get_last_ticker(resume_fn):
+    if not os.path.exists(resume_fn):
+        print("Specified resume path does not exists: %s" % resume_fn)
+        sys.exit()
+    f = open(resume_fn)
+    ticker = None
+    while True:
+        s = f.readline()
+        if s=='':
+            break
+        ticker = s.split("|")[0]
+    if ticker=="Ticker" or ticker is None:
+        print("Found invalid ticker to resume from: %s"%ticker)
+        sys.exit()
+    return ticker
 
 if __name__=='__main__':
 
     logging.config.fileConfig("logging.conf")
 
-    stocks_list_fn = sys.argv[1]
+    parser = argparse.ArgumentParser(description='Search for value stocks.')
+    parser.add_argument('stocks_list_fn', type=str, help='File including tickers and stock names.')
+    parser.add_argument('--resume', type=str, help='File from previous scrape.')
+
+    args = parser.parse_args()
+
+    stocks_list_fn = args.stocks_list_fn
+    if not os.path.exists(stocks_list_fn):
+        print("Input stocks file list does not exists: %s" % stocks_list_fn)
+        sys.exit()
+
+    resume_fn = args.resume
+    if not resume_fn is None:
+        ticker_resume = get_last_ticker(resume_fn)
+    else:
+        ticker_resume = None
+
+    start_adding = False
+
     stocks_list = []
     f = open(stocks_list_fn)
     s = f.readline() #supposedly the header
@@ -305,7 +358,13 @@ if __name__=='__main__':
             break
         s = s.replace("\n","")
         ticker, name = s.split("\t")
-        stocks_list.append((ticker, name))
+        if ticker_resume:
+            if start_adding:
+                stocks_list.append((ticker, name))
+            if ticker == ticker_resume:
+                start_adding = True
+        else:
+            stocks_list.append((ticker, name))
     f.close()
 
     results = []
@@ -313,22 +372,9 @@ if __name__=='__main__':
         res = process_stock(ticker, name)
         results.append(res)
 
-    is_first = True
 
-    out_fn = os.path.join(os.path.expanduser("~/Desktop"), "quantitave_%s" % os.path.basename(stocks_list_fn))
-    f = open(out_fn, "w")
 
-    for header, content in results:
-        if header is None:
-            continue
-        if is_first:
-            header = header.replace(",", "|")
-            f.write("%s\n"%header)
-            is_first = False
-        content = "%s\n" % content
-        content = content.replace(",", "|")
-        f.write(content)
-    f.close()
+
 
 
 
