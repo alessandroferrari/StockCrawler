@@ -36,7 +36,7 @@ StockCrawler estimates the growth of the EPS of the last ten years (year over ye
 Estimates value based on 5 years DCF using as a discount value of 1.5%, using as final capital value estimated PE with margin of safety and as a growth rate, the historic growth rate, with margin of safety.
 
 ### Price estimation based on analysts previsions
-Future is indeed uncertain, though Wall Street analysts get paid a substantial amount of bucks for attempting so.
+Future is indeed uncertain, though Wall Street analysts get paid a substantial amount of bucks for attempting to predict it.
 StockCrawler provides price estimates of the stocks, based on EPS projections of the analysts, including:
 * average of analysts consensus
 * lowest analyst projection
@@ -50,11 +50,14 @@ For each of these EPS projection, performs evaluation using Discounted Cash Flow
 Please, keep in mind that the analysis only takes into account quantitative parameters, and it does not do any qualitative analysis of the underlying goodness of the company, in term of future competitiveness and integrity.
 Also, companies sometimes are undervaluated for a good reason, thus check additional parameters, such as:
 * *Current ratio*: capability of the company to pay its short term financial obligations with its liquid and semi-liquid asset. It should be around 1.5 or greater to be good.
-* *Operating margin* and *Profit margin*: they tell you how much the companies are financially profitable in their operation, and this becomes really important, especially in tough time. I recommend company with high margins, such as greater than 3.
-* *Market Cap / Book Value* and *Market Cap / Working Capital* ratios: those were metric highly stressed by Graham in his historic book on value investing, though today they have a bit loose of relevance. Graham recommends to do not buy stocks of company with those ratio greater than 3.0.
+* *Operating margin* and *Profit margin*: they tell you how much the companies are financially profitable in their operation, and this becomes really important, especially in tough time. I recommend company with high margins, such as greater than 10%.
 * *Asset / Debt* ratio: an healthy company should have this in the range of 2:1.
 * Company had always positive EPS in the last ten year, so it is robust to the economic cycle (especial emphasis should be put in years such as 2009).
+
+As additional parameters, for picking the best stocks, some important parameters are:
+
 * Company pays dividend, and it does since last ten year, possibly with an increasing series.
+* *Market Cap / Book Value* and *Market Cap / Working Capital* ratios: those were metric highly stressed by Graham in his historic book on value investing, though today they have a bit loose of relevance. Graham recommends to do not buy stocks of company with those ratio greater than 3.0, however in today market intangible asset and technology have made this less and less important.
 
 *Quantitative analysis* is only a small part of stock picking, that needs to be follow by *qualitative analysis*.
 Always ensure to read and understand the company business when you are investing in it, and also read also the company SEC fillings.
