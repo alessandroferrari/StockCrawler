@@ -2,7 +2,7 @@
 
 ## How it works
 
-StockCrawler scan all the stocks provided in a csv file as inputs, that includes names and tickers.
+StockCrawler scan stocks to search for bargains for Value Investors. The program scans all the stocks provided in a csv file as inputs, that includes names and tickers.
 The repository already includes csv that includes NASDAQ and NYSE stocks index.
 The scripts uses BeautifulSoup and Selenium python libraries for downloading financial datas from Yahoo Finance and MorningStar.
 The financial data extend to the past ten years. It provides quantitative financial price estimates, and their margin of safety compared to the current prices.
