@@ -1,0 +1,8 @@
+numpy
+config
+requests
+python-dateutil
+pandas
+pandas_datareader
+beautifulsoup4
+selenium
