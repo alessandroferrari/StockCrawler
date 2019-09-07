@@ -6,6 +6,7 @@ StockCrawler scan all the stocks provided in a csv file as inputs, that includes
 The repository already includes csv that includes NASDAQ and NYSE stocks index.
 The scripts uses BeautifulSoup and Selenium python libraries for downloading financial datas from Yahoo Finance and MorningStar.
 The financial data extend to the past ten years. It provides quantitative financial price estimates, and their margin of safety compared to the current prices.
+Many stocks listed in indeces may not have data filled in Yahoo Finance or MorningStar portals, so the software just skip those.
 
 ### Price estimation based on Free Cash Flow
 Free Cash Flow is positive cash produced by the company, after all the bad things. Typically, it should be reinvested for dividends or shares buybacks, that lowers outstanding shares, thus increases EPS.
