@@ -8,6 +8,14 @@ The scripts uses BeautifulSoup and Selenium python libraries for downloading fin
 The financial data extend to the past ten years. It provides quantitative financial price estimates, and their margin of safety compared to the current prices.
 Many stocks listed in indeces may not have data filled in Yahoo Finance or MorningStar portals, so the software just skip those.
 
+### Literature
+Many of the methods explained here are proposed in books such as:
+* *The Intelligent Investor* by Benjamin Graham
+* *Manuale dell'Investitore Consapevole* (Italian edition) by Gabriele Bellelli, Andrew Lawford, Maurizio Mazziero
+* *Strategie di investimento per il lungo termine* (Italian edition, *Strategies for long term investors*) W.J. Bernstein
+* *Seeking Wisdom - From Darwin to Munger* by Peter Bevelin.
+* *GET RICH SLOW - Step by step value investing with Python* Udemy Course by Russell Birkholtz.
+
 ### Price estimation based on Free Cash Flow
 Free Cash Flow is positive cash produced by the company, after all the bad things. Typically, it should be reinvested for dividends or shares buybacks, that lowers outstanding shares, thus increases EPS.
 Many school of thoughts for evaluating stocks, assert that future is too uncertain to be estimated, so price should be a result of the capability of the company to produce cash.
@@ -45,6 +53,8 @@ Also, companies sometimes are undervaluated for a good reason, thus check additi
 * *Operating margin* and *Profit margin*: they tell you how much the companies are financially profitable in their operation, and this becomes really important, especially in tough time. I recommend company with high margins, such as greater than 3.
 * *Market Cap / Book Value* and *Market Cap / Working Capital* ratios: those were metric highly stressed by Graham in his historic book on value investing, though today they have a bit loose of relevance. Graham recommends to do not buy stocks of company with those ratio greater than 3.0.
 * *Asset / Debt* ratio: an healthy company should have this in the range of 2:1.
+* Company had always positive EPS in the last ten year, so it is robust to the economic cycle (especial emphasis should be put in years such as 2009).
+* Company pays dividend, and it does since last ten year, possibly with an increasing series.
 
 *Quantitative analysis* is only a small part of stock picking, that needs to be follow by *qualitative analysis*.
 Always ensure to read and understand the company business when you are investing in it, and also read also the company SEC fillings.
