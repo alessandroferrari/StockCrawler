@@ -11,6 +11,7 @@ Many stocks listed in indeces may not have data filled in Yahoo Finance or Morni
 ### Literature
 Many of the methods explained here are proposed in books such as:
 * *The Intelligent Investor* by Benjamin Graham
+* *One Up on Wall Street* by Peter Lynch
 * *Manuale dell'Investitore Consapevole* (Italian edition) by Gabriele Bellelli, Andrew Lawford, Maurizio Mazziero
 * *Strategie di investimento per il lungo termine* (Italian edition, *Strategies for long term investors*) W.J. Bernstein
 * *Seeking Wisdom - From Darwin to Munger* by Peter Bevelin.
@@ -29,7 +30,29 @@ The provided methods here are only based on earnings.
 #### EPS - Earnings per Share
 StockCrawler retrieves the EPS of the last ten years (if available), and it provides an average as expected EPS, to take into account fluctuations of market cycle in cyclical industries.
 #### Price per Earnings
-StockCrawler retrieves the prices of the last ten years (if available), and together with the EPS, computes the PE (Price per Earnings). Then, it averages the PE to the last 10 years, caps it to 35, and it applies a 40% **margin of safety**, (multiply final value by 0.6). 
+StockCrawler retrieves the prices of the last ten years (if available), and together with the EPS, computes the PE (Price per Earnings). Then, it averages the PE to the last 10 years, caps it to 35, and it applies a 40% **margin of safety**, (multiply final value by 0.6).
+Price per Earnings measures the number of years to 'repay' the initial investment assuming a 100% payout, in absence of growth. Safer and higher growth companies command higher PE.
+
+According to Graham, the simplified formula for fair PE estimation is:
+
+    Value = Current (Normal) Earnings x (8.5 + Expected annual growth %)
+
+Based on this simple formula:
+
+|Expected growth rate (yearly) |0.0%  |2.5%  |5.0%  |7.2%  |10.0% |14.3% |20.0% | 
+|------------------------------|------|------|------|------|------|------|------|
+|Growth in 10 years            |0.0%  |28.0% |63.0% |100.0%|159.0%|280.0%|319.0%| 
+|Multiplier of current earnings|8.5   |13.5  |18.5  |22.9  |28.5  |37.1  |48.5  |
+
+Peter Lynch has even a more simplified (and conservative) formula, that states:
+
+    Annual Expected Growth rate (%) = P/E + Dividend (%)
+
+So, let's say a company has a P/E of 6, and a dividend of 3%, then the annual expected growth should be bigger than 9% to make it a meaningful investment.
+Lynch suggests to consider companies with:
+    
+    Annual Expected Growth rate (%) / ( Current P/E + Dividend (%) ) > 1.5 (possibly ~2)
+
 #### Historical growth
 StockCrawler estimates the growth of the EPS of the last ten years (year over year), averages it, cap it 15%, and applies a *margin of safety* of the 40%, (multiply final value by 0.6).
 #### Discounted cash flow based on historical data
