@@ -149,7 +149,7 @@ def clean_statistics_entry(value):
 
 def parse_statistics_table(html):
     soup = BeautifulSoup(html, 'html.parser')
-    tables = soup.find_all("table", class_="table-qsp-stats")
+    tables = soup.find_all("table", class_="W(100%) Bdcl(c) Mt(10px) ")
 
     statistics = dict()
 
@@ -227,7 +227,10 @@ def get_earnings_estimate_url(ticker):
 
 def parse_earnings_estimate(html):
     soup = BeautifulSoup(html, 'html.parser')
-    tables = soup.find_all("table", class_="W(100%) M(0) BdB Bdc($c-fuji-grey-c) Mb(25px)")
+
+    tables1 = soup.find_all("table", class_="W(100%) M(0) BdB Bdc($seperatorColor) Mb(25px)")
+    tables2 = soup.find_all("table", class_="W(100%) M(0) BdB Bdc($c-fuji-grey-c) Mb(25px)")
+    tables = tables1 + tables2
     earnings_estimate = dict()
     for table in tables:
         table_dict = dict()
@@ -248,7 +251,9 @@ def parse_earnings_estimate(html):
             cnames.append(cn)
 
         # entries
-        rows = table.find_all("tr", class_="BdT Bdc($c-fuji-grey-c)")
+        rows1 = table.find_all("tr", class_="BdT Bdc($seperatorColor)")
+        rows2 = table.find_all("tr", class_="BdT Bdc($c-fuji-grey-c)")
+        rows = rows1 + rows2
         for row in rows:
             cols = row.find_all("td")
             try:
