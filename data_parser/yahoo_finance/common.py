@@ -57,19 +57,42 @@ def get_urls_financials(stock):
 
 def parse_financials_tables(html):
     soup = BeautifulSoup(html, 'html.parser')
-    rows = soup.select('table tbody tr')
+    table = soup.find_all('div', class_="M(0) Mb(10px) Whs(n) BdEnd Bdc($seperatorColor) D(itb)")[0]
+
     data = dict()
+
+    headers = table.find_all('div', class_="D(ib) Fw(b) Ta(end) Pstart(6px) Pend(4px) Py(6px) Bxz(bb) BdB Bdc($seperatorColor) Miw(100px) Miw(156px)--pnclg Tt(u) Bgc($lv1BgColor)")[0]
+
+    headers_cols = []
+    for h in headers:
+        try:
+            headers_cols.append( h.find_all('span')[0] )
+        except:
+            headers_cols.append(h)
+
+    rows = table.find_all('div', class_="D(tbr) fi-row Bgc($hoverBgColor):h")
+
     for r in rows:
-        cols_tmp = r.find_all('td')
+
+        print(r)
+
+        rname_col1 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(215px)--mv2 W(200px) ')
+        rname_col2 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(215px)--mv2 W(200px) Fw(b)')
+        rname_col3 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(200px)--mv2 W(185px) ')
+        rname_col4 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(200px)--mv2 W(185px) Fw(b)')
+        rname_col = rname_col1 + rname_col2 + rname_col3 + rname_col4
+        rname_col = rname_col[0]
+        rname = rname_col.find_all('span')[0].get_text().lower()
+
+        cols_tmp = r.find_all('div', class_='D(tbc) Ta(end) Pstart(6px) Pend(4px) Bxz(bb) Py(8px) BdB Bdc($seperatorColor) Miw(100px) Miw(156px)--pnclg Pend(10px) Bgc($lv1BgColor) fi-row:h_Bgc($hoverBgColor)')
         cols = []
         for c in cols_tmp:
             try:
                 cols.append(c.find_all('span')[0])
             except:
                 cols.append(c)
-        rname = cols[0].get_text().lower()
         entries = []
-        for c in cols[1:]:
+        for c in cols:
             try:
                 n = c.get_text().replace(',', '')
                 n = float(n)
@@ -79,6 +102,8 @@ def parse_financials_tables(html):
         if len(entries)==0:
             continue
         data[rname] = entries
+
+    print(data)
     return data
 
 
