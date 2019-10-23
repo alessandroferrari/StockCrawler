@@ -74,8 +74,6 @@ def parse_financials_tables(html):
 
     for r in rows:
 
-        print(r)
-
         rname_col1 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(215px)--mv2 W(200px) ')
         rname_col2 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(215px)--mv2 W(200px) Fw(b)')
         rname_col3 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(200px)--mv2 W(185px) ')
@@ -84,7 +82,9 @@ def parse_financials_tables(html):
         rname_col = rname_col[0]
         rname = rname_col.find_all('span')[0].get_text().lower()
 
-        cols_tmp = r.find_all('div', class_='D(tbc) Ta(end) Pstart(6px) Pend(4px) Bxz(bb) Py(8px) BdB Bdc($seperatorColor) Miw(100px) Miw(156px)--pnclg Pend(10px) Bgc($lv1BgColor) fi-row:h_Bgc($hoverBgColor)')
+        cols_tmp1 = r.find_all('div', class_='D(tbc) Ta(end) Pstart(6px) Pend(4px) Bxz(bb) Py(8px) BdB Bdc($seperatorColor) Miw(100px) Miw(156px)--pnclg Pend(10px) Bgc($lv1BgColor) fi-row:h_Bgc($hoverBgColor)')
+        cols_tmp2 = r.find_all('div', class_='D(tbc) Ta(end) Pstart(6px) Pend(4px) Bxz(bb) Py(8px) BdB Bdc($seperatorColor) Miw(100px) Miw(156px)--pnclg Bgc($lv1BgColor) fi-row:h_Bgc($hoverBgColor)')
+        cols_tmp = cols_tmp1 + cols_tmp2
         cols = []
         for c in cols_tmp:
             try:
@@ -103,7 +103,6 @@ def parse_financials_tables(html):
             continue
         data[rname] = entries
 
-    print(data)
     return data
 
 
@@ -174,9 +173,26 @@ def clean_statistics_entry(value):
 
 def parse_statistics_table(html):
     soup = BeautifulSoup(html, 'html.parser')
-    tables = soup.find_all("table", class_="W(100%) Bdcl(c) Mt(10px) ")
-
+    
     statistics = dict()
+
+    tables = soup.find_all("table", class_="W(100%) Bdcl(c) Mt(10px)  Mb(10px)")
+
+    for table in tables:
+        rows1 = table.find_all("tr", class_="Bxz(bb) H(36px) BdY Bdc($seperatorColor) ks-row Bgc($extraLightBlue):h")
+        rows = rows1
+
+        for r in rows:
+            key1 = r.find_all("td", class_="Pos(st) Start(0) Bgc($lv2BgColor) ks-row:h_Bgc($extraLightBlue) Pend(10px)  Miw(140px) ")
+            key2 = r.find_all("td", class_="Pos(st) Start(0) Bgc($lv2BgColor) ks-row:h_Bgc($extraLightBlue) Pend(10px)  ")
+            key = (key1 + key2)[0]
+            key = key.find_all("span")[0].get_text().lower()
+
+            value = r.find_all("td", class_="Fz(s) Fw(500) Ta(end) Pstart(10px) Miw(60px)")[0].get_text()
+            
+            statistics[key] = clean_statistics_entry(value)
+
+    tables = soup.find_all("table", class_="W(100%) Bdcl(c) Mt(10px) ")
 
     for table in tables:
         rows = table.find_all("tr")
@@ -185,7 +201,7 @@ def parse_statistics_table(html):
             entry = cols[0].select("span")[0].get_text().lower()
             value = cols[1].get_text()
             statistics[entry] = clean_statistics_entry(value)
-
+    
     return statistics
 
 

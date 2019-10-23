@@ -31,21 +31,11 @@ def parse_gross_profit(data, yr):
 def parse_ebit(data, yr):
 
     total_revenue = nan_filter(data["total revenue"][yr]) * DATA_MUL
-    cost_of_revenue = - nan_filter(data["cost of revenue"][yr]) * DATA_MUL
-
-    rd = - nan_filter(data["research development"][yr]) * DATA_MUL
-    selling_adm_gen = - nan_filter(data["selling general and administrative"][yr]) * DATA_MUL
-    non_recurring = - nan_filter(data["non recurring"][yr]) * DATA_MUL
-    others = - nan_filter(data["others"][yr]) * DATA_MUL
     total_operating_expenses = - nan_filter(data["total operating expenses"][yr]) * DATA_MUL
-    total_operating_expenses_calculated = cost_of_revenue + rd + selling_adm_gen + non_recurring + others
-    if not abs(total_operating_expenses * (1.0 - TOLERATED_DELTA)) <= abs(total_operating_expenses_calculated) <= abs(total_operating_expenses * (1.0 + TOLERATED_DELTA)):
-        warnings.warn("Total operating expenses scraped ({0:.4f}) differs from calculated ({1:.4f}).".format(
-            total_operating_expenses, total_operating_expenses_calculated))
-
+    
     EBIT = total_revenue + total_operating_expenses
 
-    earnings_before_interest_and_taxes = nan_filter(data["earnings before interest and taxes"][yr]) * DATA_MUL
+    earnings_before_interest_and_taxes = nan_filter(data["ebitda"][yr]) * DATA_MUL
     if not abs(EBIT * (1.0 - TOLERATED_DELTA)) <= abs(earnings_before_interest_and_taxes) <= abs(EBIT * (1.0 + TOLERATED_DELTA)):
         warnings.warn("EBIT scraped ({0:.4f}) differs from calculated ({1:.4f}).".format(
             earnings_before_interest_and_taxes, EBIT))
@@ -67,9 +57,8 @@ def parse_ebt(data, yr, EBIT, total_other_income_exp):
 def parse_operating_net(data, yr, EBT):
 
     income_tax_expenses = - nan_filter(data["income tax expense"][yr]) * DATA_MUL
-    minority_interest = nan_filter(data["minority interest"][yr]) * DATA_MUL
 
-    operating_net = nan_filter(data["net income from continuing ops"][yr]) * DATA_MUL
+    operating_net = nan_filter(data["income from continuing operations"][yr]) * DATA_MUL
     operating_net_calc = EBT + income_tax_expenses
     if not abs(operating_net * (1.0 - TOLERATED_DELTA)) <= abs(operating_net_calc) <= abs(operating_net * (1.0 + TOLERATED_DELTA)):
         warnings.warn("Operating Net Income scraped ({0:.4f}) differs from calculated ({1:.4f}).".format(
@@ -80,15 +69,7 @@ def parse_operating_net(data, yr, EBT):
 
 def parse_net_income(data, yr, operating_net):
 
-    discontinued_operations = + nan_filter(data["discontinued operations"][yr]) * DATA_MUL
-    extraordinary_items = - nan_filter(data["extraordinary items"][yr]) * DATA_MUL
-    account_changes = - nan_filter(data["effect of accounting changes"][yr]) * DATA_MUL
-    other_items = - nan_filter(data["other items"][yr]) * DATA_MUL
-    net_income_calc = operating_net + discontinued_operations + extraordinary_items + account_changes + other_items
     net_income = nan_filter(data["net income"][yr]) * DATA_MUL
-    if not abs(net_income * (1.0 - TOLERATED_DELTA)) <= abs(net_income_calc) <= abs(net_income * (1.0 + TOLERATED_DELTA)):
-        warnings.warn("Operating Net Income scraped ({0:.4f}) differs from calculated ({1:.4f}).".format(
-            net_income, net_income_calc))
 
     return net_income
 
