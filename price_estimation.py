@@ -182,7 +182,8 @@ def is_recent(results, ticker):
         raise Exception("There are not recent data available for %s, last data: %s" % (ticker, date))
 
 
-def process_stock(ticker, name):
+def process_stock(ticker, name, force_growth = None,
+                    force_eps = None, force_pe = None):
 
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
@@ -224,6 +225,15 @@ def process_stock(ticker, name):
         growth_avg, growth_avg_capped = compute_historic_growth(results, growth_bottom_cap=-0.15, growth_top_cap=0.15,
                                                                 growth_factor=0.6, weight_data=False)
         eps_avg, eps_avg_capped = compute_historic_eps(results, eps_bottom_cap=0.0, weight_data=False)
+
+        if force_growth:
+            growth_avg_capped = force_growth
+        
+        if force_eps:
+            eps_avg_capped = force_eps
+        
+        if force_pe:
+            pe_avg_capped = force_pe
 
         price_forecast_from_history = \
             dcf_price_estimation_from_historical_data(ticker, eps_avg=eps_avg_capped, growth_avg=growth_avg_capped,
@@ -333,6 +343,9 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser(description='Search for value stocks.')
     parser.add_argument('stocks_list_fn', type=str, help='File including tickers and stock names.')
     parser.add_argument('--resume', type=str, help='File from previous scrape.')
+    parser.add_argument('--force_growth', type=float, help='Force growth to a certain value')
+    parser.add_argument('--force_eps', type=float, help='Force EPS to a certain value')
+    parser.add_argument('--force_pe', type=float, help='Force PE to a certain value')
 
     args = parser.parse_args()
 
@@ -369,7 +382,10 @@ if __name__=='__main__':
 
     results = []
     for ticker, name in stocks_list:
-        res = process_stock(ticker, name)
+        res = process_stock(ticker, name, 
+                            force_growth = args.force_growth,
+                            force_eps = args.force_eps,
+                            force_pe = args.force_pe)
         results.append(res)
 
 

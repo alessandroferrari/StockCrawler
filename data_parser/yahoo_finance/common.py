@@ -57,8 +57,9 @@ def get_urls_financials(stock):
 
 def parse_financials_tables(html):
     soup = BeautifulSoup(html, 'html.parser')
+    
     table = soup.find_all('div', class_="M(0) Mb(10px) Whs(n) BdEnd Bdc($seperatorColor) D(itb)")[0]
-
+     
     data = dict()
 
     headers = table.find_all('div', class_="D(ib) Fw(b) Ta(end) Pstart(6px) Pend(4px) Py(6px) Bxz(bb) BdB Bdc($seperatorColor) Miw(100px) Miw(156px)--pnclg Tt(u) Bgc($lv1BgColor)")[0]
