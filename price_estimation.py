@@ -7,7 +7,7 @@ from __future__ import print_function
 from data_parser.morning_star.common import get_10yrs_data, FINANCIALS, PE_RATIO_ROW, EPS_ROW_TEMPLATE, GROWTH_ROW
 from data_parser.yahoo_finance.common import get_stock_price_per_month
 from historic_data_estimation import get_historic_PE, get_historic_growth, compute_historic_PE, compute_historic_eps,\
-    compute_historic_growth, is_USD, is_EUR
+    compute_historic_growth, is_USD, is_EUR, is_INR
 from dcf_estimation import dcf_price_estimation_from_historical_data, dcf_price_estimation_from_analysts
 from data_parser.yahoo_finance.price_estimation import estimate as estimate_fcf
 from data_parser.common import get_page_html
@@ -34,6 +34,8 @@ def formatted_results(ticker, name, results, eps_avg, eps_avg_capped, pe_avg, pe
         EPS_ROW = EPS_ROW_TEMPLATE % "USD"
     elif is_EUR(financials_df):
         EPS_ROW = EPS_ROW_TEMPLATE % "EUR"
+    elif is_INR(financials_df):
+        EPS_ROW = EPS_ROW_TEMPLATE % "INR"
     else:
         raise Exception("Unknown currency while processing %s!"%ticker)
     eps_df = financials_df.loc[EPS_ROW]
@@ -165,6 +167,8 @@ def get_EPS_ROW(results, ticker):
         EPS_ROW = EPS_ROW_TEMPLATE % "USD"
     elif is_EUR(financials_df):
         EPS_ROW = EPS_ROW_TEMPLATE % "EUR"
+    elif is_INR(financials_df):
+        EPS_ROW = EPS_ROW_TEMPLATE % "INR"
     else:
         raise Exception("Unknown currency while processing %s!" % ticker)
     return EPS_ROW

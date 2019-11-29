@@ -18,6 +18,9 @@ def is_EUR(financials_df):
     EPS_ROW = EPS_ROW_TEMPLATE % "EUR"
     return EPS_ROW in financials_df.index
 
+def is_INR(financials_df):
+    EPS_ROW = EPS_ROW_TEMPLATE % "INR"
+    return EPS_ROW in financials_df.index
 
 def clean_outliers(df, confidence_interval=1.96):
 
@@ -42,6 +45,9 @@ def get_historic_PE(ticker, data):
     elif is_EUR(financials_df):
         PRICES_ROW = PRICES_ROW_TEMPLATE % "EUR"
         EPS_ROW = EPS_ROW_TEMPLATE % "EUR"
+    elif is_INR(financials_df):
+        PRICES_ROW = PRICES_ROW_TEMPLATE % "INR"
+        EPS_ROW = EPS_ROW_TEMPLATE % "INR"
     else:
         raise Exception("Unknown currency while processing %s!"%ticker)
 
@@ -68,6 +74,8 @@ def get_historic_growth(data):
         EPS_ROW = EPS_ROW_TEMPLATE % "USD"
     elif is_EUR(financials_df):
         EPS_ROW = EPS_ROW_TEMPLATE % "EUR"
+    elif is_INR(financials_df):
+        EPS_ROW = EPS_ROW_TEMPLATE % "INR"
     else:
         raise Exception("Unknown currency while processing %s!"%ticker)
 
@@ -151,6 +159,8 @@ def compute_historic_eps(data, eps_bottom_cap=0.0, weight_data=True):
         EPS_ROW = EPS_ROW_TEMPLATE % "USD"
     elif is_EUR(financials_df):
         EPS_ROW = EPS_ROW_TEMPLATE % "EUR"
+    elif is_INR(financials_df):
+        EPS_ROW = EPS_ROW_TEMPLATE % "INR"
     else:
         raise Exception("Unknown currency while processing!")
 

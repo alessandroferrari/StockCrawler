@@ -79,7 +79,9 @@ def parse_financials_tables(html):
         rname_col2 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(215px)--mv2 W(200px) Fw(b)')
         rname_col3 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(200px)--mv2 W(185px) ')
         rname_col4 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(200px)--mv2 W(185px) Fw(b)')
-        rname_col = rname_col1 + rname_col2 + rname_col3 + rname_col4
+        rname_col5 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(215px)--mv2 W(200px)')
+        rname_col6 = r.find_all('div', class_='D(ib) Va(m) Ell Mt(-3px) W(200px)--mv2 W(185px)')
+        rname_col = rname_col1 + rname_col2 + rname_col3 + rname_col4 + rname_col5 + rname_col6
         rname_col = rname_col[0]
         rname = rname_col.find_all('span')[0].get_text().lower()
 
@@ -173,19 +175,23 @@ def clean_statistics_entry(value):
 
 
 def parse_statistics_table(html):
-    soup = BeautifulSoup(html, 'html.parser')
-    
+    soup = BeautifulSoup(html, 'html.parser')    
+
     statistics = dict()
 
-    tables = soup.find_all("table", class_="W(100%) Bdcl(c) Mt(10px)  Mb(10px)")
+    #tables = soup.find_all("table", class_="W(100%) Bdcl(c) Mt(10px) ")
+    tables = soup.find_all("table")
 
     for table in tables:
-        rows1 = table.find_all("tr", class_="Bxz(bb) H(36px) BdY Bdc($seperatorColor) ks-row Bgc($extraLightBlue):h")
-        rows = rows1
+
+        rows1 = table.find_all("tr", class_="Bxz(bb) H(36px) BdY Bdc($seperatorColor)")
+        rows2 = table.find_all("tr", class_="Bxz(bb) H(36px) BdB Bdbc($seperatorColor)")
+        rows3 = table.find_all("tr", class_="Bxz(bb) H(36px) BdY Bdc($seperatorColor) ks-row Bgc($extraLightBlue):h")
+        rows = rows1 + rows2 + rows3
 
         for r in rows:
-            key1 = r.find_all("td", class_="Pos(st) Start(0) Bgc($lv2BgColor) ks-row:h_Bgc($extraLightBlue) Pend(10px)  Miw(140px) ")
-            key2 = r.find_all("td", class_="Pos(st) Start(0) Bgc($lv2BgColor) ks-row:h_Bgc($extraLightBlue) Pend(10px)  ")
+            key1 = r.find_all("td", class_="Pos(st) Start(0) Bgc($lv2BgColor) ks-row:h_Bgc($extraLightBlue) Pend(10px) Miw(140px)")
+            key2 = r.find_all("td", class_="Pos(st) Start(0) Bgc($lv2BgColor) ks-row:h_Bgc($extraLightBlue) Pend(10px)")
             key = (key1 + key2)[0]
             key = key.find_all("span")[0].get_text().lower()
 
@@ -203,6 +209,8 @@ def parse_statistics_table(html):
             value = cols[1].get_text()
             statistics[entry] = clean_statistics_entry(value)
     
+    print(statistics)
+
     return statistics
 
 
